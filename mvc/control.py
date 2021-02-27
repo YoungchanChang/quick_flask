@@ -10,7 +10,7 @@ class ValidateValue:
     @staticmethod
     def is_validate_data(data):
         if not isinstance(data, str):  # 데이터에 대한 검증을 하는 메소드
-            raise ValueException
+            raise ValueException # Stack에서 해당되는 메소드를 던진다.
         return False
 
 
