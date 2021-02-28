@@ -10,6 +10,7 @@
 import logging
 
 def log_basic():
+    """기본 로그"""
     logging.basicConfig(filename='test.log', level=logging.DEBUG)
 
     logging.critical('critical')
@@ -24,6 +25,7 @@ def log_basic():
 
 
 def log_formatter():
+    """로그 포매터"""
     formatter = '%(levelname)s:%(message)s'
     formatter = '%(asctime)s:%(message)s'
     formatter = "%(asctime)s - %(name)s - [%(process)d] - [%(thread)d] - [%(levelname)s] (%(filename)s:%(lineno)d) > %(message)s"
@@ -78,10 +80,12 @@ def log_filter():
     logger.info('from main password = "test"')
 
 
+""" Config를 쓴다."""
 
 import logging.config
 
 def logger_config_ini():
+    """filter by name"""
     logging.config.fileConfig('logging.conf')
     logger = logging.getLogger('simpleExample')
 
@@ -91,9 +95,10 @@ def logger_config_ini():
     logger.error('error message')
     logger.critical('critical message')
 
-logger_config_ini()
 def simple_log_test():
+    """fileConfig에 root를 쓴다."""
     import logging.config
+    logging.config.fileConfig('logging.conf')
     logger = logging.getLogger(__name__)
 
     logger.debug('debug message')
@@ -102,4 +107,38 @@ def simple_log_test():
     logger.error('error message')
     logger.critical('critical message')
 
-simple_log_test()
+def logging_config_dict():
+    """딕셔너리 config"""
+    logging.config.dictConfig({
+        'version':1,
+        'formatters' : {
+            'sampleFormatter':{
+                'format': '%(asctime)s %(name) - 12s %(levelname)-8s %(message)s'
+            }
+        },
+        'handlers':{
+            'sampleHandlers' : {
+                'class' : 'logging.StreamHandler',
+                'formatter' : 'sampleFormatter',
+                'level': logging.DEBUG
+            }
+        },
+        'root':{
+            'handlers': ['sampleHandlers'],
+            'level' : logging.DEBUG,
+            'propagate' : 0
+        },
+        'loggers':{
+            'simpleExample' : {
+                'handlers' : ['sampleHandlers'],
+                'level' : logging.DEBUG,
+                'propagate' : 0
+            }
+        }
+    })
+    logger = logging.getLogger(__name__)
+    logger.debug('debug message')
+    logger.debug('info message')
+    logger.debug('error message')
+    logger.debug('critical message')
+logging_config_dict()
