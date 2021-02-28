@@ -1,4 +1,6 @@
 import os, sys
+CURRENT_DIR = (os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(CURRENT_DIR)
 PARENT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(PARENT_DIR)
 from run import create_app
@@ -14,20 +16,43 @@ class Cal(object):
         result *= 2
         return result
 
+
+    def save(self, dir_path, file_name):
+        if not os.path.exists(dir_path):
+            os.mkdir(dir_path)
+        file_path = os.path.join(dir_path, file_name)
+        with open(file_path, 'w') as f:
+            f.write('test')
+
 def test_add_num_and_double():
     cal = Cal()
     assert cal.add_num_and_double(1, 1) == 4
+
+cal = Cal()
+cal.save(CURRENT_DIR, 'test.txt')
 
 is_release = True
 
 
 class TestCal(object):
 
+
+
+    def test_add_num_and_doubles(self, tmpdir):
+        print(tmpdir)
+        print("What")
+        assert self.cal.add_num_and_double(1, 1) == 4
+
     @classmethod
     def setup_class(cls):
         print('start')
         cls.cal = Cal()
+        cls.test_file_name = 'test.txt'
 
+    def test_save(self, tmpdir):
+        self.cal.save(tmpdir, self.test_file_name)
+        test_file_path = os.path.join(tmpdir, self.test_file_name)
+        assert os.path.exists(test_file_path) is True
     @classmethod
     def teardown_class(cls):
         print('end')
