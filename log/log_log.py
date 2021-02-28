@@ -81,11 +81,25 @@ def log_filter():
 
 import logging.config
 
-logging.config.fileConfig('logging.ini')
-logger = logging.getLogger('simpleExample')
+def logger_config_ini():
+    logging.config.fileConfig('logging.conf')
+    logger = logging.getLogger('simpleExample')
 
-logger.debug('debug message')
-logger.info('info message')
-logger.warning('warn message')
-logger.error('error message')
-logger.critical('critical message')
+    logger.debug('debug message')
+    logger.info('info message')
+    logger.warning('warn message')
+    logger.error('error message')
+    logger.critical('critical message')
+
+logger_config_ini()
+def simple_log_test():
+    import logging.config
+    logger = logging.getLogger(__name__)
+
+    logger.debug('debug message')
+    logger.info('info message')
+    logger.warning('warn message')
+    logger.error('error message')
+    logger.critical('critical message')
+
+simple_log_test()
