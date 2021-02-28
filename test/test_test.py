@@ -24,12 +24,14 @@ class Cal(object):
         with open(file_path, 'w') as f:
             f.write('test')
 
+cal = Cal()
+cal.save(CURRENT_DIR, 'test.txt')
+
 def test_add_num_and_double():
     cal = Cal()
     assert cal.add_num_and_double(1, 1) == 4
 
-cal = Cal()
-cal.save(CURRENT_DIR, 'test.txt')
+
 
 is_release = True
 
