@@ -20,6 +20,16 @@ def test_add_num_and_double():
 
 class TestCal(object):
 
+    @classmethod
+    def setup_class(cls):
+        print('start')
+        cls.cal = Cal()
+
+    @classmethod
+    def teardown_class(cls):
+        print('end')
+        del cls.cal
+
     def setup_method(self, method):
         """테스트 실행 동안 사용될 인스턴스 변수들을 지정해줌"""
         print('method_setup={}'.format(method.__name__))
