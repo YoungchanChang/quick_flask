@@ -18,6 +18,8 @@ def test_add_num_and_double():
     cal = Cal()
     assert cal.add_num_and_double(1, 1) == 4
 
+is_release = True
+
 class TestCal(object):
 
     @classmethod
@@ -33,18 +35,25 @@ class TestCal(object):
     def setup_method(self, method):
         """테스트 실행 동안 사용될 인스턴스 변수들을 지정해줌"""
         print('method_setup={}'.format(method.__name__))
-        self.cal = Cal()
+        # self.cal = Cal()
 
 
     def teardown_method(self, method):
         """테스트 실행 동안 사용된 인스턴스 변수들을 지정해줌"""
         print('method_teardown={}'.format(method.__name__))
-        del self.cal
+        # del self.cal
 
     def test_add_num_and_double(self):
         assert self.cal.add_num_and_double(1, 1) == 4
 
+    @pytest.mark.skip(reason='skip!')
     def test_add_num_and_raise(self):
+        print('예외처리')
+        with pytest.raises(ValueError):
+            self.cal.add_num_and_double('1', '1')
+
+    @pytest.mark.skipif(is_release==True, reason='skip!')
+    def test_add_num_and_raise_if(self):
         print('예외처리')
         with pytest.raises(ValueError):
             self.cal.add_num_and_double('1', '1')
