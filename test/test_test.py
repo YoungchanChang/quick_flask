@@ -3,9 +3,7 @@ CURRENT_DIR = (os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(CURRENT_DIR)
 PARENT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(PARENT_DIR)
-from run import create_app
 import pytest
-import json
 
 
 class Cal(object):

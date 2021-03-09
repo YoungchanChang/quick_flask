@@ -3,7 +3,6 @@ PARENT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(PARENT_DIR)
 from run import create_app
 import pytest
-import json
 
 def multiply_by_two(x):
     return x * 2

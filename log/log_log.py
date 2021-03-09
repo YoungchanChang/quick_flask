@@ -2,6 +2,8 @@
 # 로그 객체 : https://docs.python.org/ko/3/library/logging.html#logrecord-attributes
 # 로그 핸들러 : https://docs.python.org/ko/3/library/logging.handlers.html
 # 참조할만한 글 : https://www.daleseo.com/python-logging-config/
+# 로그로그로그! : https://ourcstory.tistory.com/230
+# 유용한 정보 : https://medium.com/dev-genius/python-logging-basics-458ad969e850
 """
 로그 기능
 - 로깅 config
@@ -46,7 +48,6 @@ def log_logger():
     """ logger - 로그를 쓰는 자, 실제로 로그를 쓰게된다.
     logging대신에 logger라고 불리게 된다. formatter의 %(name)s과 연관 """
     logging.basicConfig(level=logging.DEBUG)
-
     logging.info('info')
 
     logger = logging.getLogger(__name__)
@@ -141,4 +142,41 @@ def logging_config_dict():
     logger.debug('info message')
     logger.debug('error message')
     logger.debug('critical message')
-logging_config_dict()
+
+def log_real():
+    from flask import Flask
+    app = Flask(__name__)
+    app.debug = True
+
+    # if not app.debug:
+    import logging
+    from logging.handlers import RotatingFileHandler  # logging 핸들러 이름을 적어줌
+    file_handler = RotatingFileHandler('dave_server.log', maxBytes=2000, backupCount=10)
+    file_handler.setLevel(logging.WARNING)  # 어느 단계까지 로깅을 할지를 적어줌
+    app.logger.addHandler(file_handler)  # app.logger.addHandler() 에 등록시켜줘야 app.logger 로 사용 가능
+    # app.logger.setLevel(logging.DEBUG)
+    app.logger.error("This is Critical error.")
+
+log_real()
+
+def advanced_log_real():
+    import logging
+    from logging.handlers import RotatingFileHandler
+    from logging import Formatter
+    from flask import Flask
+    app = Flask(__name__)
+
+    app.config['LOGGING_LEVEL'] = logging.WARNING
+    app.config['LOGGING_FORMAT'] = '%(asctime)s %(levelname)s: %(message)s in %(filename)s:%(lineno)d]'
+    app.config['LOGGING_LOCATION'] = 'abuse_detect_logs/'
+    app.config['LOGGING_FILENAME'] = 'abuse_detect.log'
+    app.config['LOGGING_MAX_BYTES'] = 2000
+    app.config['LOGGING_BACKUP_COUNT'] = 10
+
+    file_handler = RotatingFileHandler(app.config['LOGGING_LOCATION'] + app.config['LOGGING_FILENAME'],
+                                       maxBytes=app.config['LOGGING_MAX_BYTES'],
+                                       backupCount=app.config['LOGGING_BACKUP_COUNT'])
+    file_handler.setFormatter(Formatter(app.config['LOGGING_FORMAT']))
+    file_handler.setLevel(app.config['LOGGING_LEVEL'])
+    app.logger.addHandler(logging.DEBUG)
+    app.logger.info("logging start")
