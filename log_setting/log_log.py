@@ -9,7 +9,7 @@
 - 로깅 config
 - 로깅 쓰는 법
 """
-import logging
+import logging, logging.config
 
 def log_basic():
     """기본 로그"""
@@ -59,7 +59,7 @@ def log_handler():
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.DEBUG)
 
-    h = logging.FileHandler('logtest.log')
+    h = logging.FileHandler('logtest.log_setting')
     logger.addHandler(h)
 
     logger = logging.getLogger(__name__)
@@ -81,13 +81,12 @@ def log_filter():
     logger.info('from main password = "test"')
 
 
-""" Config를 쓴다."""
+""" 환경설정 파일(Config)를 통해 파일을 건드린다."""
 
-import logging.config
 
 def logger_config_ini():
     """filter by name"""
-    logging.config.fileConfig('logging.conf')
+    logging.config.fileConfig('log_setting.conf')
     logger = logging.getLogger('simpleExample')
 
     logger.debug('debug message')
@@ -95,11 +94,12 @@ def logger_config_ini():
     logger.warning('warn message')
     logger.error('error message')
     logger.critical('critical message')
+logger_config_ini()
 
 def simple_log_test():
-    """fileConfig에 root를 쓴다."""
+    """logging.conf에 keys를 root로 쓴다."""
     import logging.config
-    logging.config.fileConfig('logging.conf')
+    logging.config.fileConfig('log_setting.conf')
     logger = logging.getLogger(__name__)
 
     logger.debug('debug message')
@@ -148,16 +148,15 @@ def log_real():
     app = Flask(__name__)
     app.debug = True
 
-    # if not app.debug:
+    # if not app.debug: # 디버그 모드가 아닐 때 처리하
     import logging
     from logging.handlers import RotatingFileHandler  # logging 핸들러 이름을 적어줌
-    file_handler = RotatingFileHandler('dave_server.log', maxBytes=2000, backupCount=10)
+    file_handler = RotatingFileHandler('dave_server.log_setting', maxBytes=2000, backupCount=10)
     file_handler.setLevel(logging.WARNING)  # 어느 단계까지 로깅을 할지를 적어줌
     app.logger.addHandler(file_handler)  # app.logger.addHandler() 에 등록시켜줘야 app.logger 로 사용 가능
     # app.logger.setLevel(logging.DEBUG)
     app.logger.error("This is Critical error.")
 
-log_real()
 
 def advanced_log_real():
     import logging
@@ -169,7 +168,7 @@ def advanced_log_real():
     app.config['LOGGING_LEVEL'] = logging.WARNING
     app.config['LOGGING_FORMAT'] = '%(asctime)s %(levelname)s: %(message)s in %(filename)s:%(lineno)d]'
     app.config['LOGGING_LOCATION'] = 'abuse_detect_logs/'
-    app.config['LOGGING_FILENAME'] = 'abuse_detect.log'
+    app.config['LOGGING_FILENAME'] = 'abuse_detect.log_setting'
     app.config['LOGGING_MAX_BYTES'] = 2000
     app.config['LOGGING_BACKUP_COUNT'] = 10
 
