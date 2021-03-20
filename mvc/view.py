@@ -1,21 +1,29 @@
+import random, json
+from datetime import datetime
 from flask import Flask, Blueprint, request, render_template, make_response, jsonify, redirect, url_for, session, Response
 from mvc.control import ValidateValue, UserControl, ValueException
-import datetime, json
-import random
 
 quick_flask = Blueprint('quick_flask', __name__)
 
 # http://localhost:8080/quick_flask/ping
 @quick_flask.route('/ping', methods=['GET', 'POST'])
 def ping_pong():
-    """간단한 핑테스트"""
-    print("yes")
+    """간단한 핑테스트 및 request param 분석"""
+    IP_ADDR = request.environ.get('HTTP_X_REAL_IP', request.remote_addr) # 실제 요청 ip
+    print(IP_ADDR)
+    x = request
+    print(request.environ.get('REQUEST_URI'))
+    print(request.environ.get('PATH_INFO'))
+    now_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S') #요청시간
+    print(now_time)
+    print(request.method)
     return "pong"
 
 # http://localhost:8080/quick_flask/ping-json
 @quick_flask.route("/ping-json", methods=['POST'])
 def ping_json():
-    """json형식의 데이터를 보냈을 때 응답 확인"""
+    """json형식의 데이터를 보냈을 때 응답 확인. 간편한 방식과 복잡한 방식. """
+    input_json = request.get_json()
     input_json = json.loads(request.get_data().decode('utf-8'))
     return make_response(jsonify(input_json), 200)
 
