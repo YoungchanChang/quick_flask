@@ -143,9 +143,6 @@ def logging_config_dict():
     logger.debug('error message')
     logger.debug('critical message')
 
-
-""" flask의 logger을 쓸 때"""
-
 def log_real():
     from flask import Flask
     app = Flask(__name__)
