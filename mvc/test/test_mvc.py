@@ -1,7 +1,7 @@
 import os, sys
 PARENT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(PARENT_DIR)
-from run import create_app
+from mvc.run import create_app
 import pytest
 
 def multiply_by_two(x):
