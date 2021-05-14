@@ -2,11 +2,12 @@ import random, json
 from datetime import datetime
 from flask import Flask, Blueprint, request, render_template, make_response, jsonify, redirect, url_for, session, Response
 from mvc.control import ValidateValue, UserControl, ValueException
-
+from utility import log_time
 quick_flask = Blueprint('quick_flask', __name__)
 
 # http://localhost:8080/quick_flask/ping
 @quick_flask.route('/ping', methods=['GET', 'POST'])
+@log_time.wiki_perf_clock
 def ping_pong():
     """간단한 핑테스트 및 request param 분석"""
     IP_ADDR = request.environ.get('HTTP_X_REAL_IP', request.remote_addr) # 실제 요청 ip

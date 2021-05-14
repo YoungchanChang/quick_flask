@@ -8,10 +8,7 @@ import os
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 def create_app(test_config = None):
-    app = Flask(__name__, static_url_path='/static')
-    CORS(app)
-    app.secret_key = 'dave_server3'
-
+    app = Flask(__name__)
     app.register_blueprint(view.quick_flask, url_prefix='/quick_flask')
 
     @app.errorhandler(404)  # 없는 페이지를 요청했을 때의 에러
